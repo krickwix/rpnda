@@ -1,0 +1,4 @@
+[submodule "docker-kafka"]
+	path = docker-kafka
+	url = https://github.com/krickwix/docker-kafka.git
+	branch = rpnda
