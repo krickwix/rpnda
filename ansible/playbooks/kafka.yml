@@ -1,0 +1,6 @@
+---
+- name: Apply kafka role
+  hosts: kafka
+  any_errors_fatal: true
+  roles: 
+    - kafka_broker

@@ -1,0 +1,16 @@
+# {{ansible_managed}}
+
+[Unit]
+Description=Kafka broker
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/opt/{{ kafka_file_base }}/bin/kafka-server-start.sh /opt/{{ kafka_file_base }}/config/server.properties
+ExecStop=/opt/{{ kafka_file_base }}/bin/kafka-server-stop.sh
+
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target

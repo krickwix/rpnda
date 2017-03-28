@@ -1,0 +1,35 @@
+---
+- include_vars: group_vars/zookeeper
+
+- name: Check zookeeper installation
+  stat: path=/opt/{{ zookeeper_file_base }}
+  register: zk_install_rules
+
+- name: Download Zookeeper archive
+  get_url:
+    url: "{{ zookeeper_url }}"
+    dest: "/tmp/{{ zookeeper_file_base }}.tar.gz"
+  when: zk_install_rules.stat.exists == false
+
+- name: Unarchive Zookeeper
+  unarchive:
+    src: "/tmp/{{ zookeeper_file_base }}.tar.gz"
+    dest: /opt
+    remote_src: True
+  when: zk_install_rules.stat.exists == false
+
+- name: Create zookeeper configuration
+  template: src=templates/zoo.cfg.j2 dest=/opt/{{ zookeeper_file_base }}/conf/zoo.cfg
+
+- name: Create zookeeper myid
+  template: src=templates/myid.j2 dest=/opt/{{ zookeeper_file_base }}/conf/myid
+
+- name: Create zookeeper unit file
+  template: src=templates/zookeeper.service.j2 dest=/lib/systemd/system/zookeeper.service
+  when: ansible_service_mgr == 'systemd'
+  notify:
+    - Reload systemctl 
+    - Restart zookeeper service
+
+- name: Restart zookeeper service
+  service: name=zookeeper state=restarted

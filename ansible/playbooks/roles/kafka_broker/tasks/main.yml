@@ -1,0 +1,32 @@
+---
+- include_vars: group_vars/kafka
+
+- name: Check kafka installation
+  stat: path=/opt/{{ kafka_file_base }}
+  register: kafka_install_rules
+
+- name: Download Kafka archive
+  get_url:
+    url: "{{ kafka_url }}"
+    dest: "/tmp/{{ kafka_file_base }}.tgz"
+  when: kafka_install_rules.stat.exists == false
+
+- name: Unarchive Kafka
+  unarchive:
+    src: "/tmp/{{ kafka_file_base }}.tgz"
+    dest: /opt
+    remote_src: True
+  when: kafka_install_rules.stat.exists == false
+
+- name: Create kafka configuration
+  template: src=templates/server.properties.j2 dest=/opt/{{ kafka_file_base }}/config/server.properties
+
+- name: Create kafka unit file
+  template: src=templates/kafka.service.j2 dest=/lib/systemd/system/kafka.service
+  when: ansible_service_mgr == 'systemd'
+  notify:
+    - Reload systemctl 
+    - Restart kafka service
+
+- name: Restart kafka service
+  service: name=kafka state=restarted

@@ -1,0 +1,5 @@
+- name: Apply the common role to all nodes
+  hosts: rpi nuc
+  any_errors_fatal: true
+  roles:
+    - common

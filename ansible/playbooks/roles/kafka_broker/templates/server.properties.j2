@@ -1,0 +1,24 @@
+{% for s in groups['kafka'] %}
+{% if s.host is defined and s.host == inventory_name %}
+broker.id={{ s.id }}
+{%elif s == inventory_hostname %}
+broker.id={{ loop.index }}
+{% endif %}
+{% endfor %}
+advertised.listeners=PLAINTEXT://{{ ansible_default_ipv4.address }}:9092
+num.network.threads=3
+num.io.threads=8
+socket.send.buffer.bytes=102400
+socket.receive.buffer.bytes=102400
+socket.request.max.bytes=104857600
+log.dirs=/tmp/kafka-logs
+num.partitions=1
+num.recovery.threads.per.data.dir=1
+log.retention.hours=168
+log.segment.bytes=1073741824
+log.retention.check.interval.ms=300000
+
+{% set comma = joiner(",") %}
+zookeeper.connect={% for z in groups['zookeeper'] %}{{ comma() }}{{ z }}:2181{% endfor %}
+
+zookeeper.connection.timeout.ms=6000

@@ -1,0 +1,6 @@
+---
+- name: Apply zookeeper role
+  hosts: zookeeper
+  any_errors_fatal: true
+  roles: 
+    - zookeeper
