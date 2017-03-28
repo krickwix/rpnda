@@ -1,0 +1,16 @@
+version: "1"
+services:
+  zookeeper:
+     image: fedora:25
+     ports:
+       - "2181:2181"
+     command: ['/usr/bin/dumb-init', '/opt/zookeeper/bin/zkServer.sh', 'start']
+  #   dev_overrides:
+  #     environment:
+  #       - "DEBUG=1"
+  #
+registries: {}
+  # Add optional registries used for deployment. For example:
+  #  google:
+  #    url: https://gcr.io
+  #    namespace: my-cool-project-xxxxxx   
