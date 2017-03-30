@@ -1,0 +1,6 @@
+---
+- name: Apply gobblin role
+  hosts: gobblin
+  any_errors_fatal: true
+  roles:
+    - gobblin
