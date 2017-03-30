@@ -1,0 +1,25 @@
+---
+- include_vars: group_vars/gobblin
+
+- name: Check gobblin installation
+  stat: path="/opt/{{ gobblin_dir }}"
+  register: gobblin_installed
+
+- name: Download gobblin archive
+  get_url:
+    url: "{{ gobblin_url }}"
+    dest: "/tmp/{{ gobblin_base_file }}.tar.gz"
+  when: gobblin_installed.stat.exists == false
+
+- name: Unarchive gobblin
+  unarchive:
+    src: "/tmp/{{ gobblin_base_file }}.tar.gz"
+    dest: /opt
+    remote_src: True
+  when: gobblin_installed.stat.exists == false
+
+- name: Install hadoop client configuration
+  template: src:templates/core-site.xml.j2 dest: /etc/hadoop/core-site.xml
+  template: src:templates/hdfs-site.xml.j2 dest: /etc/hadoop/hdfs-site.xml
+  template: src:templates/yarn-site.xml.j2 dest: /etc/hadoop/yarn-site.xml
+  template: src:templates/mapred-site.xml.j2 dest: /etc/hadoop/mapred-site.xml
