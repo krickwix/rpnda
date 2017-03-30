@@ -1,0 +1,16 @@
+# {{ansible_managed}}
+
+[Unit]
+Description=yarn resource manager service
+
+[Service]
+Type=fork
+User=root
+Group=root
+Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
+ExecStart=/opt/{{ hadoop_file_base }}/bin/yarn resourcemanager
+
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target

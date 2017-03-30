@@ -1,0 +1,20 @@
+---
+- include_vars: group_vars/spark
+
+- name: Check spark installation
+  stat: path=/opt/{{ spark_file_base }}
+  register: spark_install_rules
+
+- name: Download spark archive
+  get_url:
+    url: "{{ spark_url }}"
+    dest: "/tmp/{{ spark_file_base }}.tgz"
+    tmp_dest: "/tmp"
+  when: spark_install_rules.stat.exists == false
+
+- name: Unarchive spark
+  unarchive:
+    src: "/tmp/{{ spark_file_base }}.tgz"
+    dest: /opt
+    remote_src: True
+  when: spark_install_rules.stat.exists == false

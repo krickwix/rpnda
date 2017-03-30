@@ -1,0 +1,6 @@
+---
+- name: Apply spark role
+  hosts: spark
+  any_errors_fatal: true
+  roles:
+    - spark
