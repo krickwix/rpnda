@@ -1,0 +1,6 @@
+---
+- name: Reload systemctl
+  command: systemctl daemon-reload
+
+- name: Restart yarn_nm service
+  service: name=yarn_nm state=restarted

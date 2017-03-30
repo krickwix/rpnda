@@ -1,0 +1,18 @@
+# {{ansible_managed}}
+
+[Unit]
+Description=hdfs datanode service
+
+[Service]
+Type=fork
+User=root
+Group=root
+Environment=HADOOP_CONF_DIR=/opt/{{ hadoop_file_base }}/etc/hadoop
+Environment=YARN_CONF_DIR=/opt/{{ hadoop_file_base }}/etc/hadoop
+Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
+ExecStart=/opt/{{ hadoop_file_base }}/bin/hdfs datanode
+
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target

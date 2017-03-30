@@ -1,0 +1,16 @@
+---
+- name: Apply yarn resourcemanager role
+  hosts: yarn_rm
+  any_errors_fatal: true
+  roles:
+    - yarn_rm
+- name: Apply yarn nodemanager role
+  hosts: yarn_nm
+  any_errors_fatal: true
+  roles:
+    - yarn_nm
+- name: Apply mapred historyserver role
+  hosts: mapred_hs
+  any_errors_fatal: true
+  roles:
+    - mapred_hs

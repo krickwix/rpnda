@@ -1,0 +1,11 @@
+---
+- name: Apply hadoop namenode role
+  hosts: hadoop_nn
+  any_errors_fatal: true
+  roles:
+    - hadoop_nn
+- name: Apply hadoop datanode role
+  hosts: hadoop_dn
+  any_errors_fatal: true
+  roles:
+    - hadoop_dn

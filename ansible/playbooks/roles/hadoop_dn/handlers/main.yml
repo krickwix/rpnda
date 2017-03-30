@@ -1,0 +1,6 @@
+---
+- name: Reload systemctl
+  command: systemctl daemon-reload
+
+- name: Restart hdfs_dn service
+  service: name=hdfs_dn state=restarted

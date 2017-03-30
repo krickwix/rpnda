@@ -1,0 +1,37 @@
+---
+- include_vars: group_vars/hadoop
+
+- name: Check hadoop installation
+  stat: path=/opt/{{ hadoop_file_base }}
+  register: hadoop_install_rules
+
+- name: Check hadoop datanode created
+  stat: path={{ hdfs_tmp_dir }}/dfs/data
+  register: hdfs_datanode_dir
+
+- name: Download hadoop archive
+  get_url:
+    url: "{{ hadoop_url }}"
+    dest: "/tmp/{{ hadoop_file_base }}.tar.gz"
+  when: hadoop_install_rules.stat.exists == false
+
+- name: Unarchive hadoop
+  unarchive:
+    src: "/tmp/{{ hadoop_file_base }}.tar.gz"
+    dest: /opt
+    remote_src: True
+  when: hadoop_install_rules.stat.exists == false
+
+- name: Configure datanode
+  template: src=templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/hdfs-site.xml
+  template: src=templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/core-site.xml
+
+- name: Create hdfs datanode unit file
+  template: src=templates/hdfs_dn.service.j2 dest=/lib/systemd/system/hdfs_dn.service
+  when: ansible_service_mgr == 'systemd'
+  notify:
+    - Reload systemctl
+    - Restart hdfs_dn service
+
+- name: Restart hdfs_dn service
+  service: name=hdfs_dn state=restarted
