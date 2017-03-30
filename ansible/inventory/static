@@ -22,3 +22,25 @@ pc-1598 ansible_host=pc-1598 ansible_user=root
 pc-1562 ansible_host=pc-1562 ansible_user=root
 pc-1563 ansible_host=pc-1563 ansible_user=root
 pc-1598 ansible_host=pc-1598 ansible_user=root
+
+[hadoop_nn]
+pc-1650 ansible_host=pc-1650 ansible_user=root
+
+[hadoop_dn]
+pc-1597 ansible_host=pc-1597 ansible_user=root
+
+[yarn_rm]
+pc-1650 ansible_host=pc-1650 ansible_user=root
+
+[mapred_hs]
+pc-1650 ansible_host=pc-1650 ansible_user=root
+
+[yarn_nm]
+pc-1597 ansible_host=pc-1597 ansible_user=root
+
+[spark]
+pc-1597 ansible_host=pc-1597 ansible_user=root
+pc-1650 ansible_host=pc-1650 ansible_user=root
+
+[gobblin]
+pc-1651 ansible_host=pc-1651 ansible_user=root
