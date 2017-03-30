@@ -44,14 +44,18 @@
     url:     "{{ jdk_url_base }}/{{ jdk_file_base }}-arm32-vfp-hflt.tar.gz"
     headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
     dest:    "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-arm32-vfp-hflt.tar.gz"
-  when: ansible_architecture == "armv7l"
+  when:
+    - jdk_install_rules.stat.exists == false
+    - ansible_architecture == "armv7l"
 
 - name: unarchive JDK (arm)
   unarchive:
     src: "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-arm32-vfp-hflt.tar.gz"
     dest: /opt
     remote_src: True
-  when: ansible_architecture == "armv7l"
+  when:
+    - jdk_install_rules.stat.exists == false    
+    - ansible_architecture == "armv7l"
 
 - name: link JDK bin
   file:
