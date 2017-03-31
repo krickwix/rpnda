@@ -7,3 +7,5 @@
 - include: yarn.yml
 - include: spark.yml
 - include: gobblin.yml
+- include: hbase_master.yml
+- include: hbase_region.yml
