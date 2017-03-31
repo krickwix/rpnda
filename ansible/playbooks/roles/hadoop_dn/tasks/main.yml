@@ -22,8 +22,10 @@
     remote_src: True
   when: hadoop_install_rules.stat.exists == false
 
-- name: Configure datanode
+- name: Configure datanode hdfs
   template: src=templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/hdfs-site.xml
+
+- name: Configure datanode core
   template: src=templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/core-site.xml
 
 - name: Create hdfs datanode unit file
@@ -35,3 +37,4 @@
 
 - name: Restart hdfs_dn service
   service: name=hdfs_dn state=restarted
+  when: force_dn_restart == true

@@ -22,8 +22,10 @@
     remote_src: True
   when: hadoop_install_rules.stat.exists == false
 
-- name: Configure namenode
+- name: Configure namenode hdfs
   template: src=templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/hdfs-site.xml
+
+- name: Configure namenode core
   template: src=templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/core-site.xml
 
 - name: Format namenode
@@ -41,3 +43,4 @@
 
 - name: Restart hdfs_nn service
   service: name=hdfs_nn state=restarted
+  when: force_nn_restart == true
