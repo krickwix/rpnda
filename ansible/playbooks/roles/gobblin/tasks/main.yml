@@ -1,5 +1,6 @@
 ---
 - include_vars: group_vars/gobblin
+- include_vars: group_vars/hadoop
 
 - name: Check gobblin installation
   stat: path="/opt/{{ gobblin_dir }}"
