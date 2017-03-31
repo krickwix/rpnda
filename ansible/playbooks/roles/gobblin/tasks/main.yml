@@ -18,8 +18,14 @@
     remote_src: True
   when: gobblin_installed.stat.exists == false
 
-- name: Install hadoop client configuration
-  template: src:templates/core-site.xml.j2 dest: /etc/hadoop/core-site.xml
-  template: src:templates/hdfs-site.xml.j2 dest: /etc/hadoop/hdfs-site.xml
-  template: src:templates/yarn-site.xml.j2 dest: /etc/hadoop/yarn-site.xml
-  template: src:templates/mapred-site.xml.j2 dest: /etc/hadoop/mapred-site.xml
+- name: Install hadoop client core configuration
+  template: src=templates/core-site.xml.j2 dest=/etc/hadoop/core-site.xml
+
+- name: Install hadoop client hdfs configuration
+  template: src=templates/hdfs-site.xml.j2 dest=/etc/hadoop/hdfs-site.xml
+
+- name: Install hadoop client yarn configuration
+  template: src=templates/yarn-site.xml.j2 dest=/etc/hadoop/yarn-site.xml
+
+- name: Install hadoop client mapred configuration
+  template: src=templates/mapred-site.xml.j2 dest=/etc/hadoop/mapred-site.xml
