@@ -44,3 +44,7 @@ pc-1650 ansible_host=pc-1650 ansible_user=root
 
 [gobblin]
 pc-1651 ansible_host=pc-1651 ansible_user=root
+
+[kafka_manager]
+pc-1653 ansible_host=pc-1653 ansible_user=root
+

@@ -33,3 +33,4 @@
 
 - name: Restart zookeeper service
   service: name=zookeeper state=restarted
+  when: force_zk_restart == true

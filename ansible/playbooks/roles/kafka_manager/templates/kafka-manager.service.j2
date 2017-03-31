@@ -1,0 +1,20 @@
+# {{ansible_managed}}
+
+[Unit]
+Description=kafka manager service
+
+[Service]
+Type=simple
+User=root
+Group=root
+Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
+{% set comma = joiner(",") %}
+Environment=ZK_HOSTS={% for z in groups['zookeeper'] %}{{ comma() }}{{ z }}:2181{% endfor %}
+
+ExecStart=/opt/{{ kafka_manager_file_base }}/bin/kafka-manager
+
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target
+

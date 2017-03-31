@@ -34,3 +34,4 @@
 
 - name: Restart mapred_hs service
   service: name=mapred_hs state=restarted
+  when: force_hs_restart == true
