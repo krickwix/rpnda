@@ -1,0 +1,9 @@
+---
+
+- include: bootstrap.yml
+- include: zookeeper.yml
+- include: kafka.yml
+- include: hadoop.yml
+- include: yarn.yml
+- include: spark.yml
+- include: gobblin.yml
