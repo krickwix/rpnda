@@ -4,3 +4,9 @@
   any_errors_fatal: true
   roles: 
     - kafka_broker
+- name: Apply Kafka manager role
+  hosts: kafka_manager
+  any_errors_fatal: true
+  roles:
+    - kafka_manager
+
