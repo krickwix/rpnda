@@ -1,5 +1,8 @@
 ---
-- include_vars: group_vars/gobblin
+- include_vars: "{{ item }}"
+  with_items:
+    - group_vars/hadoop
+    - group_vars/gobblin
 
 - name: Check gobblin installation
   stat: path="/opt/{{ gobblin_dir }}"
@@ -18,8 +21,17 @@
     remote_src: True
   when: gobblin_installed.stat.exists == false
 
-- name: Install hadoop client configuration
-  template: src:templates/core-site.xml.j2 dest: /etc/hadoop/core-site.xml
-  template: src:templates/hdfs-site.xml.j2 dest: /etc/hadoop/hdfs-site.xml
-  template: src:templates/yarn-site.xml.j2 dest: /etc/hadoop/yarn-site.xml
-  template: src:templates/mapred-site.xml.j2 dest: /etc/hadoop/mapred-site.xml
+- name: Create hadoop config directory
+  file: path=/etc/hadoop state=directory
+
+- name: Install hadoop core configuration
+  template: src=templates/core-site.xml.j2 dest=/etc/hadoop/core-site.xml
+
+- name: Install hadoop hdfs configuration
+  template: src=templates/hdfs-site.xml.j2 dest=/etc/hadoop/hdfs-site.xml
+
+- name: Install hadoop yarn configuration
+  template: src=templates/yarn-site.xml.j2 dest=/etc/hadoop/yarn-site.xml
+
+- name: Install hadoop mapred configuration
+  template: src=templates/mapred-site.xml.j2 dest=/etc/hadoop/mapred-site.xml
