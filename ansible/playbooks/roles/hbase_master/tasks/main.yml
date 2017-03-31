@@ -1,0 +1,28 @@
+---
+- include_vars: group_vars/hbase
+
+- name: Check hbase installation
+  stat: path=/opt/{{ hbase_file_base }}
+  register: hbase_installed
+
+- name: Download hbase archive
+  get_url:
+    url: "{{ hbase_url }}"
+    dest: "/tmp/{{ hbase_file_base }}.tar.gz"
+    tmp_dest: /
+- name: Unarchive hbase
+  unarchive:
+    src: "/tmp/{{ hbase_file_base }}.tar.gz"
+    dest: /opt
+    remote_src: True
+  when: hbase_installed.stat.exists == false
+
+- name: Create hbase configuration
+  template: src=templates/hbase-site.xml.j2 dest=/opt/{{ hbase_file_base }}/conf/hbase-site.xml
+
+- name: Create hbase_master unit file
+  template: src=templates/hbase-master.service.j2 dest=/lib/systemd/system/hbase-master.service
+  when: ansible_service_mgr == 'systemd'
+  notify:
+    - Reload systemctl
+    - Restart hbase-master service

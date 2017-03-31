@@ -1,0 +1,6 @@
+---
+- name: Apply hbase regionserver role
+  hosts: hbase_region
+  any_errors_fatal: true
+  roles:
+    - hbase_region

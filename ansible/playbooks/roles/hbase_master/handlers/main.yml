@@ -1,0 +1,6 @@
+---
+- name: Reload systemctl
+  command: systemctl daemon-reload
+
+- name: Restart hbase-master service
+  service: name=hbase-master state=restarted enabled=yes

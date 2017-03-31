@@ -1,0 +1,6 @@
+---
+- name: Reload systemctl
+  command: systemctl daemon-reload
+
+- name: Restart hbase-region service
+  service: name=hbase-region state=restarted enabled=yes

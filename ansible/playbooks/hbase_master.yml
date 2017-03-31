@@ -1,0 +1,6 @@
+---
+- name: Apply hbase master role
+  hosts: hbase_master
+  any_errors_fatal: true
+  roles:
+    - hbase_master
