@@ -3,4 +3,4 @@
   command: systemctl daemon-reload
 
 - name: Restart mapred_hs service
-  service: name=mapred_hs state=restarted
+  service: name=mapred_hs state=restarted enabled=yes

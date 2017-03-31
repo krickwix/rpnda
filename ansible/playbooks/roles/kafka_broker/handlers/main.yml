@@ -3,4 +3,4 @@
   command: systemctl daemon-reload
 
 - name: Restart kafka service
-  service: name=kafka state=restarted
+  service: name=kafka state=restarted enabled=yes

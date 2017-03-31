@@ -3,4 +3,4 @@
   command: systemctl daemon-reload
 
 - name: Restart yarn_rm service
-  service: name=yarn_rm state=restarted
+  service: name=yarn_rm state=restarted enabled=yes

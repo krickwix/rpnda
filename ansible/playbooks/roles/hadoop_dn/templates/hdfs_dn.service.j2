@@ -4,7 +4,7 @@
 Description=hdfs datanode service
 
 [Service]
-Type=fork
+Type=simple
 User=root
 Group=root
 Environment=HADOOP_CONF_DIR=/opt/{{ hadoop_file_base }}/etc/hadoop

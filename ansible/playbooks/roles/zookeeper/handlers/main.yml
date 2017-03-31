@@ -3,4 +3,4 @@
   command: systemctl daemon-reload
 
 - name: Restart zookeeper service
-  service: name=zookeeper state=restarted
+  service: name=zookeeper state=restarted enabled=yes
