@@ -13,3 +13,5 @@ force_dn_restart: false
 force_hs_restart: false
 force_zk_restart: false
 force_kk_restart: false
+
+force_pkg_update: false
