@@ -1,5 +1,5 @@
 ---
-gobblin_mirror: "192.168.0.20:8080"
+gobblin_mirror: "192.168.0.51:50000"
 gobblin_url: "http://{{ gobblin_mirror }}/gobblin-distribution-0.9.0.tar.gz"
 gobblin_base_file: gobblin-distribution-0.9.0
 gobblin_archive: "{{ gobblin_base_file }}.tar.gz"
