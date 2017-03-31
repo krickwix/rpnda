@@ -1,0 +1,7 @@
+---
+- include_vars: group_vars/kafka
+
+- name: Create zk list
+  set_fact:
+    zkHosts: '{{ zkHosts + [item] }}:2181,'
+  with_items: "{{groups['zookeeper']|list}}"

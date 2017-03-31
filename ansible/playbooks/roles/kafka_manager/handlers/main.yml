@@ -1,0 +1,7 @@
+---
+- name: Reload systemctl
+  command: systemctl daemon-reload
+
+- name: Restart kafka-manager service
+  service: name=kafka-manager state=restarted enabled=yes
+

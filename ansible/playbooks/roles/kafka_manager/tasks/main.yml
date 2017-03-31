@@ -1,0 +1,37 @@
+---
+- include_vars: group_vars/kafka
+
+- name: Create zk list
+  set_fact:
+    zkHosts: "{{ groups['zookeeper']|join(',')}}"
+
+- name: Check kafka manager installation
+  stat: path=/opt/{{ kafka_manager_file_base }}
+  register: kafka_manager_installed
+
+- name: Download kafka manager
+  get_url:
+    url: "{{ kafka_manager_url }}"
+    dest: "/tmp/{{ kafka_manager_file_base }}.zip"
+  when: kafka_manager_installed.stat.exists == false
+
+- name: Unarchive kafka manager
+  unarchive:
+    src: "/tmp/{{ kafka_manager_file_base }}.zip"
+    dest: /opt
+    remote_src: True
+  when: kafka_manager_installed.stat.exists == false
+
+- name: Create kafka-manager unit file
+  template: src=templates/kafka-manager.service.j2 dest=/lib/systemd/system/kafka-manager.service
+  when: ansible_service_mgr == 'systemd'
+  notify:
+    - Reload systemctl 
+    - Restart kafka-manager service
+
+- name: Create the cluster
+  uri:
+    url: http://localhost:9000/clusters
+    method: POST
+    status_code: 200
+    body: "name=pnda&kafkaVersion={{ kafka_version }}&zkHosts={{ zkHosts }}"
