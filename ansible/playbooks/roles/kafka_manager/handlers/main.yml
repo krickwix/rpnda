@@ -1,7 +1,11 @@
 ---
 - name: Reload systemctl
   command: systemctl daemon-reload
+  when: ansible_service_mgr == 'systemd'
+
+- name: Restart kafka-manager service (systemd)
+  systemd: name=kafka-manager state=restarted enabled=yes
+  when: ansible_service_mgr == 'systemd'
 
 - name: Restart kafka-manager service
   service: name=kafka-manager state=restarted enabled=yes
-

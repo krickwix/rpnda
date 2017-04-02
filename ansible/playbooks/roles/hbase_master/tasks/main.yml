@@ -26,3 +26,7 @@
   notify:
     - Reload systemctl
     - Restart hbase-master service
+
+- name: Enable service hbase-master
+  systemd: name=hbase-master enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'

@@ -28,8 +28,12 @@
   template: src=templates/zookeeper.service.j2 dest=/lib/systemd/system/zookeeper.service
   when: ansible_service_mgr == 'systemd'
   notify:
-    - Reload systemctl 
+    - Reload systemctl
     - Restart zookeeper service
+
+- name: Enable service zookeeper
+  systemd: name=zookeeper enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'
 
 - name: Restart zookeeper service
   service: name=zookeeper state=restarted

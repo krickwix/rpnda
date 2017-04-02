@@ -12,9 +12,9 @@ Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
 Environment=ZK_HOSTS={% for z in groups['zookeeper'] %}{{ comma() }}{{ z }}:2181{% endfor %}
 
 ExecStart=/opt/{{ kafka_manager_file_base }}/bin/kafka-manager
-
+Restart=always
+RestartSec=3
 TimeoutSec=300
 
 [Install]
 WantedBy=multi-user.target
-

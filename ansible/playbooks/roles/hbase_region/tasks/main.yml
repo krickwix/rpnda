@@ -27,3 +27,7 @@
   notify:
     - Reload systemctl
     - Restart hbase-region service
+
+- name: Enable service hbase-region
+  systemd: name=hbase-region enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'

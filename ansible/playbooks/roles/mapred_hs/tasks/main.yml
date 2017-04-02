@@ -32,6 +32,10 @@
     - Reload systemctl
     - Restart mapred_hs service
 
+- name: Enable service mapred_hs
+  systemd: name=mapred_hs enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'
+
 - name: Restart mapred_hs service
   service: name=mapred_hs state=restarted
   when: force_hs_restart == true

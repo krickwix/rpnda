@@ -10,7 +10,8 @@ Group=root
 Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
 ExecStart=/opt/{{ hbase_file_base }}/bin/hbase master start
 ExecStop=/opt/{{ hbase_file_base }}/bin/hbase master stop
-
+Restart=always
+RestartSec=3
 TimeoutSec=300
 
 [Install]

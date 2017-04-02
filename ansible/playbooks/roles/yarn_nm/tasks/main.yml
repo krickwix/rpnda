@@ -32,5 +32,9 @@
     - Reload systemctl
     - Restart yarn_nm service
 
+- name: Enable service yarn_nm
+  systemd: name=yarn_nm enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'
+
 - name: Restart yarn_nm service
   service: name=yarn_nm state=restarted

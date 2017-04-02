@@ -26,8 +26,12 @@
   template: src=templates/kafka-manager.service.j2 dest=/lib/systemd/system/kafka-manager.service
   when: ansible_service_mgr == 'systemd'
   notify:
-    - Reload systemctl 
+    - Reload systemctl
     - Restart kafka-manager service
+
+- name: Enable service kafka-manager
+  systemd: name=kafka-manager enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'
 
 - name: Create the cluster
   uri:

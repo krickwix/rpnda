@@ -13,14 +13,16 @@
 
 - name: install packages
   command: dnf -y install libselinux-python python2-dnf
-  when: ansible_os_family == "RedHat" and ansible_pkg_mgr == "dnf"
+  when: ansible_os_family == "RedHat" and ansible_pkg_mgr == "dnf" and force_pkg_update == true
 
-- name: disable firewalld
-  service:
-    name: firewalld
-    enabled: no
-    state: stopped
-  when: ansible_os_family == "RedHat"
+- name: Disable service initial-setup
+  systemd: name=initial-setup enabled=no state=stopped
+  when: ansible_service_mgr == 'systemd' and ansible_architecture == "armv7l"
+  ignore_errors: yes
+  
+- name: Disable service firewalld
+  systemd: name=firewalld enabled=no state=stopped
+  when: ansible_service_mgr == 'systemd'
 
 - stat: path=/opt/jdk{{ jdk_version_file }}
   register: jdk_install_rules
@@ -30,14 +32,18 @@
     url:     "{{ jdk_url_base }}/{{ jdk_file_base }}-x64.tar.gz"
     headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
     dest:    "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-x64.tar.gz"
-  when: ansible_architecture == "x86_64"
+  when:
+    - jdk_install_rules.stat.exists == false
+    - ansible_architecture == "x86_64"
 
 - name: unarchive JDK (x64)
   unarchive:
     src: "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-x64.tar.gz"
     dest: /opt
     remote_src: True
-  when: ansible_architecture == "x86_64"
+  when:
+    - jdk_install_rules.stat.exists == false
+    - ansible_architecture == "x86_64"
 
 - name: download Oracle JDK (arm)
   get_url:

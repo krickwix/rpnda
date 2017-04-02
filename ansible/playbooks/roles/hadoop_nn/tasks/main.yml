@@ -41,6 +41,10 @@
     - Reload systemctl
     - Restart hdfs_nn service
 
+- name: Enable service hdfs_nn
+  systemd: name=hdfs_nn enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'
+
 - name: Restart hdfs_nn service
   service: name=hdfs_nn state=restarted
   when: force_nn_restart == true

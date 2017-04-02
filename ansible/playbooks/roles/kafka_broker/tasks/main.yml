@@ -25,8 +25,12 @@
   template: src=templates/kafka.service.j2 dest=/lib/systemd/system/kafka.service
   when: ansible_service_mgr == 'systemd'
   notify:
-    - Reload systemctl 
+    - Reload systemctl
     - Restart kafka service
+
+- name: Enable service kafka
+  systemd: name=kafka enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'
 
 - name: Restart kafka service
   service: name=kafka state=restarted
