@@ -1,0 +1,3 @@
+---
+- name: Restart opentsdb service
+  service: name=opentsdb state=restarted enabled=yes

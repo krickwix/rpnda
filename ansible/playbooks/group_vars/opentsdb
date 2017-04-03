@@ -1,0 +1,4 @@
+---
+opentsdb_version: 2.3.0
+opentsdb_file_base: opentsdb-{{ opentsdb_version }}
+opentsdb_url: http://192.168.0.51:50000/{{ opentsdb_file_base }}.rpm

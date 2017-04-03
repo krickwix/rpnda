@@ -1,0 +1,6 @@
+---
+- name: Apply opentsdb role
+  hosts: opentsdb
+  any_errors_fatal: true
+  roles:
+    - opentsdb

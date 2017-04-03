@@ -53,3 +53,6 @@ pc-1655 ansible_host=pc-1655 ansible_user=root
 
 [hbase_region]
 pc-1597 ansible_host=pc-1597 ansible_user=root
+
+[opentsdb]
+pc-1655 ansible_host=pc-1655 ansible_user=root
