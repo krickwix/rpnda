@@ -8,10 +8,10 @@ jdk_url_base: http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version }}-{{ j
 jdk_file_base: jdk-{{ jdk_version }}-linux
 jdk_extract_dir: /tmp
 
-force_nn_restart: false
-force_dn_restart: false
-force_hs_restart: false
-force_zk_restart: false
-force_kk_restart: false
+force_nn_restart: true
+force_dn_restart: true
+force_hs_restart: true
+force_zk_restart: true
+force_kk_restart: true
 
 force_pkg_update: false
