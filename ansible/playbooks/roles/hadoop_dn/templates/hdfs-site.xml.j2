@@ -23,6 +23,14 @@
   </property>
   <property>
     <name>fs.default.name</name>
-    <value>hdfs://{{ hostvars[groups['hadoop_nn'][0]].ansible_default_ipv4.address }}:54310</value>
+    <value>hdfs://{{ groups['hadoop_nn'][0] }}:54310</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.hive.groups</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.hive.hosts</name>
+    <value>*</value>
   </property>
 </configuration>

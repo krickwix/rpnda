@@ -1,0 +1,128 @@
+---
+- include_vars: group_vars/hive
+- include_vars: group_vars/hadoop
+- include_vars: group_vars/hbase
+
+- name: Create the hive user
+  user:
+    name: hive
+    shell: /bin/bash
+    append: yes
+
+- name: Check hbase installation
+  stat: path=/opt/{{ hbase_file_base }}
+  register: hbase_installed
+
+- name : Check that hiveserver2 db already exist
+  stat: path=/var/run/hiverser2.db.prepared
+  register: hiverserver2_db_prepared
+
+- name: Download hbase archive
+  get_url:
+    url: "{{ hbase_url }}"
+    dest: "/tmp/{{ hbase_file_base }}.tar.gz"
+    tmp_dest: /tmp
+
+- name: Unarchive hbase
+  unarchive:
+    src: "/tmp/{{ hbase_file_base }}.tar.gz"
+    dest: /opt
+    remote_src: True
+  when: hbase_installed.stat.exists == false
+
+- name: Create hbase configuration
+  template: src=../hbase_master/templates/hbase-site.xml.j2 dest=/opt/{{ hbase_file_base }}/conf/hbase-site.xml
+
+- name: Check hadoop installation
+  stat: path=/opt/{{ hadoop_file_base }}
+  register: hadoop_install_rules
+
+- name: Download hadoop archive
+  get_url:
+    url: "{{ hadoop_url }}"
+    dest: "/tmp/{{ hadoop_file_base }}.tar.gz"
+  when: hadoop_install_rules.stat.exists == false
+
+- name: Unarchive hadoop
+  unarchive:
+    src: "/tmp/{{ hadoop_file_base }}.tar.gz"
+    dest: /opt
+    remote_src: True
+  when: hadoop_install_rules.stat.exists == false
+
+- name: Configure hdfs site
+  template: src=../hadoop_dn/templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/hdfs-site.xml
+
+- name: Configure core site
+  template: src=../hadoop_dn/templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/core-site.xml
+
+- name: Check hive installation
+  stat: path=/opt/{{ hive_file_base }}
+  register: hive_installed
+
+- name: Download hive archive
+  get_url:
+    url: "{{ hive_url }}"
+    dest: "/tmp/{{ hive_file_base }}.tar.gz"
+    tmp_dest: /tmp
+
+- name: Unarchive hive
+  unarchive:
+    src: "/tmp/{{ hive_file_base }}.tar.gz"
+    dest: /opt
+    remote_src: True
+  when: hive_installed.stat.exists == false
+
+- name: Prepare metastore_path
+  file:
+    path: "{{ metastore_path }}"
+    state: directory
+    owner: "{{ hiveserver_user }}"
+
+- name: Include spark role
+  include_role:
+    name: spark
+
+- name: copy spark scala library jar
+  shell: cp -f /opt/{{ spark_file_base }}/jars/scala-library*.jar /opt/{{ hive_file_base }}/lib/
+
+- name: copy spark core jar
+  shell: cp -f /opt/{{ spark_file_base }}/jars/spark-core*.jar /opt/{{ hive_file_base }}/lib/
+
+- name: copy spark network jar
+  shell: cp -f /opt/{{ spark_file_base }}/jars/spark-network-common*.jar /opt/{{ hive_file_base }}/lib/
+
+- name: Configure hiverserver2 site
+  template: src=templates/hive-site.xml.j2 dest=/opt/{{ hive_file_base }}/conf/hive-site.xml
+  notify:
+    - Reload systemctl
+    - Restart hiveserver2 service
+
+- name: Prepare hdfs warehouse and db
+  shell: |
+    export HBASE_HOME=/opt/{{ hbase_file_base }}
+    export HADOOP_HOME=/opt/{{ hadoop_file_base }}
+    export JAVA_HOME=/opt/jdk{{ jdk_version_file }}
+    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -mkdir -p /tmp
+    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -mkdir -p /user/hive/warehouse
+    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -chmod -R a+w /tmp
+    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -chmod -R a+w /user/hive/warehouse
+    cd "{{ metastore_path }}" && \
+    export JAVA_HOME=/opt/jdk{{ jdk_version_file }} \
+    export HADOOP_HOME=/opt/{{ hadoop_file_base }} \
+    export HBASE_HOME=/opt/{{ hbase_file_base }} \
+    /opt/{{ hive_file_base }}/bin/schematool -dbType derby -initSchema
+    touch /var/run/hiverser2.db.prepared
+  ignore_errors: yes
+  when: hiverserver2_db_prepared.stat.exists == false
+
+- name: Create hiverserver2 unit file
+  template: src=templates/hiveserver2.service.j2 dest=/lib/systemd/system/hiveserver2.service
+  when: ansible_service_mgr == 'systemd'
+  notify:
+    - Reload systemctl
+    - Restart hiveserver2 service
+
+- name: Enable service hiveserver2
+  systemd: name=hiveserver2 enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'

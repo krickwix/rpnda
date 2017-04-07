@@ -1,0 +1,6 @@
+---
+- name: Apply hiveserver2 role
+  hosts: hiveserver2
+  any_errors_fatal: true
+  roles:
+    - hiveserver2

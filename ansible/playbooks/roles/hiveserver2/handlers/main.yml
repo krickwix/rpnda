@@ -1,0 +1,6 @@
+---
+- name: Reload systemctl
+  command: systemctl daemon-reload
+
+- name: Restart hiveserver2 service
+  service: name=hiveserver2 state=restarted enabled=yes

@@ -1,0 +1,7 @@
+---
+hive_version: 2.1.1
+hive_file_base: apache-hive-{{ hive_version }}-bin
+hive_url: http://www-eu.apache.org/dist/hive/hive-{{ hive_version }}/{{ hive_file_base}}.tar.gz
+
+metastore_path: /var/lib/hive
+hiveserver_user: root
