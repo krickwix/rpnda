@@ -5,7 +5,7 @@ pc-1598 ansible_host=pc-1598 ansible_user=root
 pc-1650 ansible_host=pc-1650 ansible_user=root
 pc-1651 ansible_host=pc-1651 ansible_user=root
 pc-1653 ansible_host=pc-1653 ansible_user=root
-#pc-1654 ansible_host=pc-1654 ansible_user=root
+pc-1654 ansible_host=pc-1654 ansible_user=root
 pc-1655 ansible_host=pc-1655 ansible_user=root
 pc-1656 ansible_host=pc-1656 ansible_user=root
 pc-1658 ansible_host=pc-1658 ansible_user=root
@@ -56,3 +56,6 @@ pc-1597 ansible_host=pc-1597 ansible_user=root
 
 [opentsdb]
 pc-1655 ansible_host=pc-1655 ansible_user=root
+
+[hiveserver2]
+pc-1656 ansible_host=pc-1656 ansible_user=root
