@@ -10,7 +10,7 @@ Group=root
 Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
 {% set comma = joiner(",") %}
 Environment=ZK_HOSTS={% for z in groups['zookeeper'] %}{{ comma() }}{{ z }}:2181{% endfor %}
-
+ExecStartPre=rm -f /opt/{{ kafka_manager_file_base }}/RUNNING_PID
 ExecStart=/opt/{{ kafka_manager_file_base }}/bin/kafka-manager
 Restart=always
 RestartSec=3
