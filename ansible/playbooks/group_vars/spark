@@ -1,5 +1,5 @@
 ---
 spark_version: 2.1.0
-spark_file_base: spark-{{ spark_version }}
+spark_file_base: spark-{{ spark_version }}-bin-hadoop{{ hadoop_major_version }}
 hadoop_major_version: 2.7
-spark_url: http://www-eu.apache.org/dist/spark/{{ spark_file_base }}/{{ spark_file_base}}-bin-hadoop{{ hadoop_major_version }}.tgz
+spark_url: http://www-eu.apache.org/dist/spark/{{ spark_file_base }}/{{ spark_file_base}}.tgz
