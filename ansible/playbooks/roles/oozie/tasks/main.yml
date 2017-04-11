@@ -1,0 +1,21 @@
+---
+- include_vars: group_vars/oozie
+
+- name: Check oozie installation
+  stat: path=/opt/{{ oozie_file_base }}
+  register: oozie_installed
+
+- name: Download oozie archive
+  get_url:
+    url: "{{ oozie_url }}"
+    dest: "/tmp/{{ oozie_file_base }}-distro.tar.gz"
+    tmp_dest: /tmp
+
+- name: Unarchive oozie
+  unarchive:
+    src: "/tmp/{{ oozie_file_base }}-distro.tar.gz"
+    dest: /opt
+    remote_src: True
+  when: oozie_installed.stat.exists == false
+
+

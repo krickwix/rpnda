@@ -1,0 +1,5 @@
+---
+oozie_version: 4.3.0
+oozie_file_base: oozie-{{ oozie_version }}
+oozie_url: http://192.168.0.51:50000/{{ oozie_file_base}}-distro.tar.gz
+

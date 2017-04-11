@@ -1,0 +1,6 @@
+---
+- name: Apply oozie role
+  hosts: oozie
+  any_errors_fatal: true
+  roles:
+    - oozie
