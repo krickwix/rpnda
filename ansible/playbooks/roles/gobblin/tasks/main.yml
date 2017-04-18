@@ -19,6 +19,10 @@
     remote_src: True
   when: gobblin_installed.stat.exists == false
 
+- file:
+    path: /etc/hadoop
+    state: directory
+
 - name: Install hadoop client core configuration
   template: src=templates/core-site.xml.j2 dest=/etc/hadoop/core-site.xml
 
