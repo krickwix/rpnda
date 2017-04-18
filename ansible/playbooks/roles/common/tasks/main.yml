@@ -19,10 +19,18 @@
   systemd: name=initial-setup enabled=no state=stopped
   when: ansible_service_mgr == 'systemd' and ansible_architecture == "armv7l"
   ignore_errors: yes
-  
+
 - name: Disable service firewalld
   systemd: name=firewalld enabled=no state=stopped
   when: ansible_service_mgr == 'systemd'
+  ignore_errors: yes
+
+- name: Set hosts file
+  template: src=hosts.j2 dest=/etc/hosts mode=0644
+
+- name: Set hostname
+  hostname:
+    name: "{{ ansible_host }}"
 
 - stat: path=/opt/jdk{{ jdk_version_file }}
   register: jdk_install_rules
