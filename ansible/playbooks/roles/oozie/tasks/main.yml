@@ -1,9 +1,33 @@
 ---
 - include_vars: group_vars/oozie
+- include_vars: group_vars/hadoop
 
 - name: Check oozie installation
   stat: path=/opt/{{ oozie_file_base }}
   register: oozie_installed
+
+- name: Check hadoop installation
+  stat: path=/opt/{{ hadoop_file_base }}
+  register: hadoop_install_rules
+
+- name: Download hadoop archive
+  get_url:
+    url: "{{ hadoop_url }}"
+    dest: "/tmp/{{ hadoop_file_base }}.tar.gz"
+  when: hadoop_install_rules.stat.exists == false
+
+- name: Unarchive hadoop
+  unarchive:
+    src: "/tmp/{{ hadoop_file_base }}.tar.gz"
+    dest: /opt
+    remote_src: True
+  when: hadoop_install_rules.stat.exists == false
+
+- name: Configure namenode hdfs
+  template: src=../hadoop_nn/templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/hdfs-site.xml
+
+- name: Configure namenode core
+  template: src=../hadoop_nn/templates/hdfs-site.xml.j2 dest=/opt/{{ hadoop_file_base }}/etc/hadoop/core-site.xml
 
 - name: Download oozie archive
   get_url:
@@ -18,4 +42,22 @@
     remote_src: True
   when: oozie_installed.stat.exists == false
 
+- name: Create libext directory
+  file:
+    path: "/opt/{{ oozie_file_base }}/libext"
+    state: directory
 
+- name: Download extjs
+  get_url:
+    url: "{{ extjs_url }}"
+    dest: "/opt/{{ oozie_file_base }}/libext/{{ extjs_file_base }}.zip"
+
+- name: Copy hadoop library
+  shell:
+    cp /opt/{{ hadoop_file_base }}/share/hadoop/common/hadoop-common-{{ hadoop_version }}.jar /opt/{{ oozie_file_base }}/libext/ &&
+    cp /opt/{{ hadoop_file_base }}/share/hadoop/mapreduce/hadoop-mapreduce-client-common-{{ hadoop_version }}.jar /opt/{{ oozie_file_base }}/libext/
+
+- name: prepare war
+  shell: bin/oozie-setup.sh prepare-war
+  args:
+    chdir: "/opt/{{ oozie_file_base }}"
