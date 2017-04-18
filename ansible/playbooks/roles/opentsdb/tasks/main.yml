@@ -23,24 +23,30 @@
   template: src=templates/hbase-site.xml.j2 dest=/opt/{{ hbase_file_base }}/conf/hbase-site.xml
 
 - name: install crudini
-  dnf:
+  package:
     name: crudini
     state: present
 
-- name: install opentsdb
+- name: install opentsdb (rpm)
   dnf:
     name: "{{ opentsdb_url }}"
     state: present
   when: ansible_pkg_mgr == 'dnf'
 
+- name: install opentsdb (deb)
+  apt:
+    deb: "{{ opentsdb_url_deb }}"
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+
 - name: create opentsdb tables
   shell: env JAVA_HOME=/opt/jdk{{ jdk_version_file }} COMPRESSION=NONE HBASE_HOME=/opt/{{ hbase_file_base }} /usr/share/opentsdb/tools/create_table.sh
-
-- name: Enable service opentsdb
-  systemd: name=opentsdb enabled=yes state=started daemon-reload=yes
-  when: ansible_service_mgr == 'systemd'
 
 - name: Configure opentsdb
   shell: crudini --set /etc/opentsdb/opentsdb.conf "" tsd.storage.hbase.zk_quorum "{{ groups['zookeeper']|join(',')}}"
   notify:
     - Restart opentsdb service
+
+- name: Enable service opentsdb
+  systemd: name=opentsdb enabled=yes state=started daemon-reload=yes
+  when: ansible_service_mgr == 'systemd'
