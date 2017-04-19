@@ -62,3 +62,4 @@ raspberrypi-5 ansible_host=raspberrypi-5 ansible_user=pi ansible_become=yes
 raspberrypi-9-1 ansible_host=raspberrypi-9-1 ansible_user=pi ansible_become=yes
 
 [oozie]
+raspberrypi-9-1 ansible_host=raspberrypi-9-1 ansible_user=pi ansible_become=yes
