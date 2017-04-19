@@ -37,16 +37,16 @@
 
 - name: download Oracle JDK (x64)
   get_url:
-    url:     "{{ jdk_url_base }}/{{ jdk_file_base }}-x64.tar.gz"
+    url:     "{{ jdk_url_base }}/{{ jdk_file_base }}-linux-x64.tar.gz"
     headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
-    dest:    "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-x64.tar.gz"
+    dest:    "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-linux-x64.tar.gz"
   when:
     - jdk_install_rules.stat.exists == false
     - ansible_architecture == "x86_64"
 
 - name: unarchive JDK (x64)
   unarchive:
-    src: "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-x64.tar.gz"
+    src: "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-linux-x64.tar.gz"
     dest: /opt
     remote_src: True
   when:
@@ -55,16 +55,16 @@
 
 - name: download Oracle JDK (arm)
   get_url:
-    url:     "{{ jdk_url_base }}/{{ jdk_file_base }}-arm32-vfp-hflt.tar.gz"
+    url:     "{{ jdk_url_base }}/{{ jdk_file_base }}-linux-arm32-vfp-hflt.tar.gz"
     headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
-    dest:    "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-arm32-vfp-hflt.tar.gz"
+    dest:    "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-linux-arm32-vfp-hflt.tar.gz"
   when:
     - jdk_install_rules.stat.exists == false
     - ansible_architecture == "armv7l"
 
 - name: unarchive JDK (arm)
   unarchive:
-    src: "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-arm32-vfp-hflt.tar.gz"
+    src: "/{{ jdk_extract_dir }}/{{ jdk_file_base }}-linux-arm32-vfp-hflt.tar.gz"
     dest: /opt
     remote_src: True
   when:

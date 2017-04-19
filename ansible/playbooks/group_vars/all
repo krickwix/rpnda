@@ -1,11 +1,11 @@
 ---
 cluster_name: rpnda
 
-jdk_version: 8u121
+jdk_version: 8u131
 jdk_patch: b13
-jdk_version_file: 1.8.0_121
-jdk_url_base: http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version }}-{{ jdk_patch }}/e9e7ea248e2c4826b92b3f075a80e441/
-jdk_file_base: jdk-{{ jdk_version }}-linux
+jdk_version_file: 1.8.0_131
+jdk_url_base: http://192.168.0.51:50000
+jdk_file_base: jdk-{{ jdk_version }}
 jdk_extract_dir: /tmp
 
 force_nn_restart: true
