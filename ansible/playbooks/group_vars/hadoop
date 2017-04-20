@@ -2,5 +2,6 @@
 hadoop_version: 2.7.3
 hadoop_file_base: hadoop-{{ hadoop_version }}
 hadoop_url: http://www-eu.apache.org/dist/hadoop/common/{{ hadoop_file_base }}/{{ hadoop_file_base}}.tar.gz
+hadoop_url: http://192.168.0.51:50000/{{ hadoop_file_base}}-arm.tar.gz
 
 hdfs_tmp_dir: /hdfs

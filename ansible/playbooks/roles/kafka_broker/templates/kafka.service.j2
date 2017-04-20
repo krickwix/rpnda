@@ -7,6 +7,7 @@ Description=Kafka broker
 Type=simple
 User=root
 Group=root
+Environment=JAVA_HOME=/usr
 ExecStart=/opt/{{ kafka_file_base }}/bin/kafka-server-start.sh /opt/{{ kafka_file_base }}/config/server.properties
 ExecStop=/opt/{{ kafka_file_base }}/bin/kafka-server-stop.sh
 Restart=always

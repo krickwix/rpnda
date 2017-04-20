@@ -7,6 +7,7 @@ Description=ZooKeeper
 Type=simple
 User=root
 Group=root
+Environment=JAVA_HOME=/usr
 ExecStart=/opt/{{ zookeeper_file_base }}/bin/zkServer.sh start-foreground
 ExecStop=/opt/{{ zookeeper_file_base }}/bin/zkServer.sh stop
 Restart=always

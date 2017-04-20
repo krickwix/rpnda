@@ -7,7 +7,7 @@ Description=kafka manager service
 Type=simple
 User=root
 Group=root
-Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
+Environment=JAVA_HOME=/usr
 {% set comma = joiner(",") %}
 Environment=ZK_HOSTS={% for z in groups['zookeeper'] %}{{ comma() }}{{ z }}:2181{% endfor %}
 

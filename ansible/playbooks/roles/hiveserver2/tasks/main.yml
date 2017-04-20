@@ -100,18 +100,18 @@
 
 - name: Prepare hdfs warehouse and db
   shell: |
-    export HBASE_HOME=/opt/{{ hbase_file_base }}
-    export HADOOP_HOME=/opt/{{ hadoop_file_base }}
-    export JAVA_HOME=/opt/jdk{{ jdk_version_file }}
-    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -mkdir -p /tmp
-    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -mkdir -p /user/hive/warehouse
-    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -chmod -R a+w /tmp
-    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -chmod -R a+w /user/hive/warehouse
+    export HBASE_HOME=/opt/{{ hbase_file_base }}; \
+    export HADOOP_HOME=/opt/{{ hadoop_file_base }}; \
+    export JAVA_HOME=/usr; \
+    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -mkdir -p /tmp; \
+    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -mkdir -p /user/hive/warehouse; \
+    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -chmod -R a+w /tmp; \
+    /opt/{{ hadoop_file_base }}/bin/hdfs dfs -chmod -R a+w /user/hive/warehouse; \
     cd "{{ metastore_path }}" && \
-    export JAVA_HOME=/opt/jdk{{ jdk_version_file }} \
-    export HADOOP_HOME=/opt/{{ hadoop_file_base }} \
-    export HBASE_HOME=/opt/{{ hbase_file_base }} \
-    /opt/{{ hive_file_base }}/bin/schematool -dbType derby -initSchema
+    export JAVA_HOME=/usr; \
+    export HADOOP_HOME=/opt/{{ hadoop_file_base }}; \
+    export HBASE_HOME=/opt/{{ hbase_file_base }}; \
+    /opt/{{ hive_file_base }}/bin/schematool -dbType derby -initSchema && \
     touch /var/run/hiverser2.db.prepared
   ignore_errors: yes
   when: hiverserver2_db_prepared.stat.exists == false

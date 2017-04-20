@@ -7,7 +7,7 @@ Description=Hbase Region Server
 Type=simple
 User=root
 Group=root
-Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
+Environment=JAVA_HOME=/usr
 ExecStart=/opt/{{ hbase_file_base }}/bin/hbase regionserver start
 ExecStop=/opt/{{ hbase_file_base }}/bin/hbase regionserver stop
 Restart=always

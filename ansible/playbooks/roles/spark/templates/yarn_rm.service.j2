@@ -7,7 +7,7 @@ Description=yarn resource manager service
 Type=fork
 User=root
 Group=root
-Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
+Environment=JAVA_HOME=/usr
 ExecStart=/opt/{{ hadoop_file_base }}/bin/yarn resourcemanager
 
 TimeoutSec=300

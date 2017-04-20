@@ -7,7 +7,7 @@ Description=Hbase Master
 Type=simple
 User=root
 Group=root
-Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
+Environment=JAVA_HOME=/usr
 ExecStart=/opt/{{ hbase_file_base }}/bin/hbase master start
 ExecStop=/opt/{{ hbase_file_base }}/bin/hbase master stop
 Restart=always

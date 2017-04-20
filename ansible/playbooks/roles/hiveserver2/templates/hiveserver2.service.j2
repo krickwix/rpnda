@@ -9,8 +9,8 @@ User={{ hiveserver_user }}
 WorkingDirectory={{ metastore_path }}
 Environment=HBASE_HOME=/opt/{{ hbase_file_base }}
 Environment=HADOOP_HOME=/opt/{{ hadoop_file_base }}
-Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
 Environment=HIVE_HOME=/opt/{{ hive_file_base }}
+Environment=JAVA_HOME=/usr
 ExecStart=/opt/{{ hive_file_base }}/bin/hiveserver2
 Restart=always
 RestartSec=3

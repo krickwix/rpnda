@@ -7,7 +7,7 @@ Description=mapred history server service
 Type=fork
 User=root
 Group=root
-Environment=JAVA_HOME=/opt/jdk{{ jdk_version_file }}
+Environment=JAVA_HOME=/usr
 ExecStart=/opt/{{ hadoop_file_base }}/bin/mapred historyserver
 Restart=always
 RestartSec=3
