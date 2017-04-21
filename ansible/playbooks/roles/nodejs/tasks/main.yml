@@ -1,0 +1,16 @@
+---
+
+- name: Download nodejs binaries
+  get_url:
+    url: https://nodejs.org/dist/v6.10.2/node-v6.10.2-linux-armv7l.tar.xz
+    dest: /tmp/node-v6.10.2.tar.xz
+
+- name: unarchive nodejs binaries
+  unarchive:
+    src: /tmp/node-v6.10.2.tar.xz
+    dest: /usr/local
+    extra_opts: "--strip 1"
+    remote_src: yes
+
+
+    
