@@ -74,18 +74,40 @@
     state: started
     enabled: yes
 
-- name: install ruby1.9.3
+- name: install ruby (deb)
   package:
     name: ruby1.9.3
     state: latest
+  when: ansible_os_family == "Debian"
 
-- name: install ruby development
+- name: install ruby (rpm)
+  package:
+    name: ruby
+    state: latest
+  when: ansible_os_family == "RedHat"
+
+- name: install ruby development (deb)
   package:
     name: ruby-dev
     state: latest
+  when: ansible_os_family == "Debian"
 
+- name: install ruby development (rpm)
+  package:
+    name: ruby-devel
+    state: latest
+  when: ansible_os_family == "RedHat"
+
+- name: install build tools (rpm)
+  package:
+    name: redhat-rpm-config
+    state: latest
+  when: ansible_os_family == "RedHat"
+  
 - name: install fluentd
   gem:
     name: fluentd
     version: 0.12.34
     state: present
+    user_install: no
+  
