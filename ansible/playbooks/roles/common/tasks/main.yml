@@ -29,6 +29,12 @@
     - ansible_service_mgr == 'systemd'
     - ansible_os_family == "RedHat"
 
+- name: Set selinux permissive
+  selinux:
+    policy: targeted
+    state: permissive
+  when: ansible_os_family == "RedHat"
+
 - name: Set hosts file
   template: src=hosts.j2 dest=/etc/hosts mode=0644
 
@@ -68,6 +74,18 @@
     name: collectd
     state: latest
 
+- name: configure collectd
+  template: src=templates/collectd.conf.j2 dest=/etc/collectd/collectd.conf
+  notify:
+    - Restart collectd
+  when: ansible_os_family == "Debian"
+
+- name: configure collectd
+  template: src=templates/collectd.conf.j2 dest=/etc/collectd.conf
+  notify:
+    - Restart collectd
+  when: ansible_os_family == "RedHat"
+
 - name: enable collectd
   service:
     name: collectd
@@ -103,11 +121,10 @@
     name: redhat-rpm-config
     state: latest
   when: ansible_os_family == "RedHat"
-  
+
 - name: install fluentd
   gem:
     name: fluentd
     version: 0.12.34
     state: present
     user_install: no
-  

@@ -9,7 +9,7 @@
   </property>
   <property>
     <name>spark.yarn.jars</name>
-    <value>hdfs://{{ ansible_default_ipv4.address }}:54310/spark-jars/*</value>
+    <value>hdfs://{{ groups['hadoop_nn'][0] }}:54310/spark-jars/*</value>
   </property>
   <property>
     <name>spark.executor.memory</name>

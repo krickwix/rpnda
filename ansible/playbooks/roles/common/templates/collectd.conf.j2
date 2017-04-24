@@ -1,0 +1,30 @@
+FQDNLookup true
+
+LoadPlugin syslog
+<Plugin syslog>
+  LogLevel info
+</Plugin>
+
+#LoadPlugin cpu
+#LoadPlugin df
+#LoadPlugin disk
+#LoadPlugin interface
+#LoadPlugin load
+#LoadPlugin memory
+#LoadPlugin processes
+#LoadPlugin swap
+LoadPlugin write_graphite
+
+<Plugin write_graphite>
+  <Node "{{ groups['grafana'][0] }}">
+    Host "{{ groups['grafana'][0] }}"
+    Port "2003"
+    Protocol "tcp"
+    LogSendErrors true
+    Prefix "collectd"
+    Postfix "collectd"
+    StoreRates true
+    AlwaysAppendDS false
+    EscapeCharacter "_"
+  </Node>
+</Plugin>

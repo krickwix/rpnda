@@ -63,3 +63,6 @@ raspberrypi-9-1 ansible_host=raspberrypi-9-1 ansible_user=pi ansible_become=yes
 
 [oozie]
 raspberrypi-9-1 ansible_host=raspberrypi-9-1 ansible_user=pi ansible_become=yes
+
+[grafana]
+raspberrypi-14 ansible_host=raspberrypi-14 ansible_user=pi ansible_become=yes

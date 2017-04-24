@@ -1,0 +1,34 @@
+---
+- include_vars: group_vars/grafana
+
+- name: install graphite-carbon
+  package:
+    name: graphite-carbon
+    state: latest
+
+- name: start carbon-cache service
+  service:
+    name: carbon-cache
+    state: started
+    enabled: yes
+
+- get_url:
+    url: https://{{ grafana_mirror }}/grafana_{{ grafana_version }}_armhf.deb
+    dest: /tmp/grafana_{{ grafana_version }}_armhf.deb
+    validate_certs: no
+  when:
+    - ansible_os_family == "Debian"
+    - ansible_architecture == "armv7l"
+
+- name: install grafana package (deb)
+  apt:
+    deb: /tmp/grafana_{{ grafana_version }}_armhf.deb
+  when:
+    - ansible_os_family == "Debian"
+    - ansible_architecture == "armv7l"
+
+- name: start grafana-server
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
